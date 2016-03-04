@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -30,6 +31,7 @@ public class KafkaConsumer extends Thread
         Properties props = new Properties();
         props.put("zookeeper.connect", KafkaProperties.zkConnect);
         props.put("group.id", KafkaProperties.groupId);
+        props.put("consumer.id", KafkaProperties.consumerId+"-"+new Random(System.currentTimeMillis()).nextInt(100));
         props.put("zookeeper.session.timeout.ms", "40000");
         props.put("zookeeper.sync.time.ms", "200");
         props.put("auto.commit.interval.ms", "1000");
@@ -44,7 +46,7 @@ public class KafkaConsumer extends Thread
         KafkaStream<byte[], byte[]> stream = consumerMap.get(topic).get(0);
         ConsumerIterator<byte[], byte[]> it = stream.iterator();
         while (it.hasNext()) {
-            System.out.println("receive：" + new String(it.next().message()));
+            System.out.println("receive:" + new String(it.next().message()));
             try {
                 sleep(3000);
             } catch (InterruptedException e) {
@@ -52,10 +54,9 @@ public class KafkaConsumer extends Thread
             }
         }
     }
-    
     public static void main(String[] args) {
-		KafkaConsumer consumer = new KafkaConsumer(KafkaProperties.topic);
-		consumer.start();
+		KafkaConsumer c = new KafkaConsumer(KafkaProperties.topic);
+		c.start();
 	}
 }
 

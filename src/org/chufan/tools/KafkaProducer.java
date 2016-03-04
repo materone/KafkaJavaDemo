@@ -18,7 +18,7 @@ public class KafkaProducer extends Thread
     public KafkaProducer(String topic)
     {
         props.put("serializer.class", "kafka.serializer.StringEncoder");
-        props.put("metadata.broker.list", "127.0.0.1:9092");
+        props.put("metadata.broker.list", KafkaProperties.kafkaServerURL+":" + KafkaProperties.kafkaServerPort);
         producer = new kafka.javaapi.producer.Producer<Integer, String>(new ProducerConfig(props));
         this.topic = topic;
     }
@@ -42,8 +42,8 @@ public class KafkaProducer extends Thread
     }
     
     public static void main(String[] args) {
-		KafkaProducer producer=new KafkaProducer(KafkaProperties.topic);
-		producer.start();
+		KafkaProducer p = new KafkaProducer(KafkaProperties.topic);
+		p.start();
 	}
 
 }
