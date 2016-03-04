@@ -40,6 +40,11 @@ public class KafkaProducer extends Thread
             }
         }
     }
+    
+    public static void main(String[] args) {
+		KafkaProducer producer=new KafkaProducer(KafkaProperties.topic);
+		producer.start();
+	}
 
 }
 

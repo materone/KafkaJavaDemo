@@ -52,5 +52,10 @@ public class KafkaConsumer extends Thread
             }
         }
     }
+    
+    public static void main(String[] args) {
+		KafkaConsumer consumer = new KafkaConsumer(KafkaProperties.topic);
+		consumer.start();
+	}
 }
 
