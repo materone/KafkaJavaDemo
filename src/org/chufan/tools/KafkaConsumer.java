@@ -31,7 +31,7 @@ public class KafkaConsumer extends Thread
         Properties props = new Properties();
         props.put("zookeeper.connect", KafkaProperties.zkConnect);
         props.put("group.id", KafkaProperties.groupId);
-        props.put("consumer.id", KafkaProperties.consumerId+"-"+new Random(System.currentTimeMillis()).nextInt(100));
+        props.put("consumer.id", KafkaProperties.consumerId+"-"+new Random(System.currentTimeMillis()).nextInt(10000));
         props.put("zookeeper.session.timeout.ms", "40000");
         props.put("zookeeper.sync.time.ms", "200");
         props.put("auto.commit.interval.ms", "1000");
@@ -41,14 +41,14 @@ public class KafkaConsumer extends Thread
     @Override
     public void run() {
         Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
-        topicCountMap.put(topic, new Integer(1));
+        topicCountMap.put(topic, new Integer(10));
         Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumer.createMessageStreams(topicCountMap);
         KafkaStream<byte[], byte[]> stream = consumerMap.get(topic).get(0);
         ConsumerIterator<byte[], byte[]> it = stream.iterator();
         while (it.hasNext()) {
             System.out.println("receive:" + new String(it.next().message()));
             try {
-                sleep(3000);
+                sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
